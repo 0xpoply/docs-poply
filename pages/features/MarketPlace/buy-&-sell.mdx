@@ -1,0 +1,51 @@
+# buy & sell
+
+- Enable users to purchase NFTs listed for sale.
+- Implement a secure payment mechanism, allowing users to pay with cryptocurrencies or fiat currencies.
+- Facilitate the transfer of ownership from the seller to the buyer upon successful purchase.
+
+```
+// Define the NFT contract
+contract NFTMarketplace {
+    // Structure to represent an NFT item
+    struct NFT {
+        address seller;
+        uint256 price;
+        bool isAvailable;
+    }
+
+    // Mapping to store NFT items
+    mapping(uint256 => NFT) public nfts;
+
+    // Function to list an NFT for sale
+    function listNFT(uint256 tokenId, uint256 price) external {
+        require(nfts[tokenId].isAvailable == false, "NFT is already listed");
+
+        // Store the NFT details
+        nfts[tokenId] = NFT(msg.sender, price, true);
+    }
+
+    // Function to buy an available NFT
+    function buyNFT(uint256 tokenId) external payable {
+        require(nfts[tokenId].isAvailable == true, "NFT is not available");
+        require(msg.value >= nfts[tokenId].price, "Insufficient funds");
+
+        // Transfer NFT ownership to the buyer
+        address seller = nfts[tokenId].seller;
+        nfts[tokenId].isAvailable = false;
+        nfts[tokenId].seller = msg.sender;
+
+        // Send the payment to the seller
+        (bool success, ) = seller.call{value: nfts[tokenId].price}("");
+        require(success, "Failed to send payment");
+        
+        // Refund any excess payment to the buyer
+        if (msg.value > nfts[tokenId].price) {
+            (bool refundSuccess, ) = msg.sender.call{value: msg.value - nfts[tokenId].price}("");
+            require(refundSuccess, "Failed to refund excess payment");
+        }
+    }
+}
+```
+
+In this Solidity code snippet, we have defined a basic NFT marketplace contract with two functions: `listNFT` and `buyNFT`. The `listNFT` function allows a seller to list an NFT for sale by specifying the `tokenId` and `price`. The `buyNFT` function allows a buyer to purchase a listed NFT by providing the `tokenId` and sending the required amount of Monad (`msg.value`) as payment. The ownership of the NFT is transferred to the buyer, and the payment is sent to the seller.

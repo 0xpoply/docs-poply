@@ -1,0 +1,20 @@
+{
+  "index": "Introduction",
+  "Our-Mission": "Our Mission",
+  "p&s": "Problems and sloutions",
+  "features": "features",
+  "Revenue-Model": "Revenue Model",
+  "Milestone": "Milestone",
+  
+  "Privacy-Policy": "Privacy Policy",
+  "about": {
+    "title": "About",
+    "type": "page"
+  },
+  "x.com": {
+    "title": "x.com ↗",
+    "type": "page",
+    "href": "https://twitter.com/poply_xyz",
+    "newWindow": true
+  }
+}
