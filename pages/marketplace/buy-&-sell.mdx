@@ -1,7 +1,7 @@
 # buy & sell
 
 - Enable users to purchase NFTs listed for sale.
-- Implement a secure payment mechanism, allowing users to pay with cryptocurrencies or fiat currencies.
+- Implement a secure payment mechanism, allowing users to pay with $MON.
 - Facilitate the transfer of ownership from the seller to the buyer upon successful purchase.
 
 ```
@@ -38,7 +38,7 @@ contract NFTMarketplace {
         // Send the payment to the seller
         (bool success, ) = seller.call{value: nfts[tokenId].price}("");
         require(success, "Failed to send payment");
-        
+
         // Refund any excess payment to the buyer
         if (msg.value > nfts[tokenId].price) {
             (bool refundSuccess, ) = msg.sender.call{value: msg.value - nfts[tokenId].price}("");

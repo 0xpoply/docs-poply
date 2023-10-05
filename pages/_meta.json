@@ -1,16 +1,11 @@
 {
   "index": "Introduction",
+  "marketplace": "Marketplace",
   "Our-Mission": "Our Mission",
-  "p&s": "Problems and sloutions",
   "features": "features",
   "Revenue-Model": "Revenue Model",
   "Roadmap": "Roadmap",
-
   "Privacy-Policy": "Privacy Policy",
-  "about": {
-    "title": "About",
-    "type": "page"
-  },
   "x.com": {
     "title": "x.com ↗",
     "type": "page",
