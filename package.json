@@ -1,7 +1,7 @@
 {
   "name": "poply-docs-xyz",
   "version": "0.0.1",
-  "description": "Nextra docs template",
+  "description": "Poply marketplace docs",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
