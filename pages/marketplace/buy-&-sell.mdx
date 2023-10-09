@@ -1,51 +1,34 @@
 # buy & sell
 
-- Enable users to purchase NFTs listed for sale.
-- Implement a secure payment mechanism, allowing users to pay with $MON.
-- Facilitate the transfer of ownership from the seller to the buyer upon successful purchase.
+The Buy & Sell functionality in Poply enables users to interact with the marketplace contract by purchasing and selling NFTs (Non-Fungible Tokens)
 
-```solidity
-// Define the NFT contract
-contract NFTMarketplace {
-    // Structure to represent an NFT item
-    struct NFT {
-        address seller;
-        uint256 price;
-        bool isAvailable;
-    }
+## Buy
 
-    // Mapping to store NFT items
-    mapping(uint256 => NFT) public nfts;
+To initiate a purchase, users can call buyItem function in the contract. The request should include the following parameters:
+-Collection address
+-Token ID of NFT
 
-    // Function to list an NFT for sale
-    function listNFT(uint256 tokenId, uint256 price) external {
-        require(nfts[tokenId].isAvailable == false, "NFT is already listed");
+Upon receiving the purchase request, Poply's smart contract verifies the availability and ownership of the NFT. If the NFT is available and the user has sufficient funds, the smart contract executes the transaction by transferring ownership of the NFT to the buyer's wallet address. The corresponding payment is also processed and recorded on the blockchain.
 
-        // Store the NFT details
-        nfts[tokenId] = NFT(msg.sender, price, true);
-    }
+## Sell
 
-    // Function to buy an available NFT
-    function buyNFT(uint256 tokenId) external payable {
-        require(nfts[tokenId].isAvailable == true, "NFT is not available");
-        require(msg.value >= nfts[tokenId].price, "Insufficient funds");
+To create a listing for selling a NFT, users should call listItem function of the contract.
+The request should include the following parameters:
 
-        // Transfer NFT ownership to the buyer
-        address seller = nfts[tokenId].seller;
-        nfts[tokenId].isAvailable = false;
-        nfts[tokenId].seller = msg.sender;
+- Collection address
+- Token ID for NFT
+- Listing price
 
-        // Send the payment to the seller
-        (bool success, ) = seller.call{value: nfts[tokenId].price}("");
-        require(success, "Failed to send payment");
+Upon receiving the sell request, Poply's smart contract verifies the ownership of the NFT and creates a new listing on the marketplace. The smart contract records the seller's wallet address, the NFT details, and the specified selling price.
 
-        // Refund any excess payment to the buyer
-        if (msg.value > nfts[tokenId].price) {
-            (bool refundSuccess, ) = msg.sender.call{value: msg.value - nfts[tokenId].price}("");
-            require(refundSuccess, "Failed to refund excess payment");
-        }
-    }
-}
-```
+## Listing Management
 
-In this Solidity code snippet, we have defined a basic NFT marketplace contract with two functions: `listNFT` and `buyNFT`. The `listNFT` function allows a seller to list an NFT for sale by specifying the `tokenId` and `price`. The `buyNFT` function allows a buyer to purchase a listed NFT by providing the `tokenId` and sending the required amount of Monad (`msg.value`) as payment. The ownership of the NFT is transferred to the buyer, and the payment is sent to the seller.
+Users can manage their active listings through the Poply platform. They can update the selling price, edit the listing details, or remove the listing altogether. These actions trigger corresponding updates on the smart contract, ensuring the accuracy and integrity of the marketplace.
+
+## Error Handling
+
+Poply's smart contract implementation include robust error handling mechanisms. In case of any errors or exceptions during the buy or sell process, appropriate error codes and messages are returned to the user, providing clear feedback on the encountered issue.
+
+## Smart Contract Events
+
+Poply's smart contract emits events related to buy and sell functions. These events can be subscribed to by external applications or services to receive real-time updates on buy and sell of NFTs. The events provide information such as the NFT ID, the buyer and seller wallet addresses, NFT collection, and price.

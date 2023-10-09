@@ -1,14 +1,13 @@
 # Royalty distribution
 
-contract exposes `getRoyalties` method, which expects an ID as input (usually tokenId) and returns an array of accounts & basis points.
+The Royalty Distribution feature in Poply ensures that creators receive a percentage of the sales proceeds whenever their NFTs are resold on the marketplace.<br />
 
-Royalties allows for Poply to support different royalty standards for different collections.
+When a user purchases an NFT, the smart contract automatically calculates and sets the royalty percentage for future resales. This percentage is stored within the smart contract of the marketplace and is used to distribute royalties to the creator whenever the NFT is resold.
 
-Support on-chain royalties. These are handled in the Exchange contract by the royalties array,
-which is needed to execute the mint function.
+## Royalty Distribution Algorithm
 
-**This tuple is made up of two variables, `fees.recipient` and `fees.value`:**
+The royalty distribution algorithm ensures accurate and transparent royalty calculations. It takes into account the resale price, the royalty percentage. The algorithm ensures that the creator receives their entitled royalty amount while maintaining the integrity of the marketplace.
 
-`fees.recipient` — refers to either the item owner (by default) or an address where the royalties will be received.
+## Error Handling
 
-`fees.value` — the royalties percentage. By default, this value is 1000 on Poply , which is a 10% royalties fee. This is done using basis points. More information regarding basis point can be found here.
+Poply's smart contract implementation includes robust error handling mechanisms for royalty distribution. In case of any errors or exceptions during the royalty calculation or distribution process, appropriate error codes and messages are returned, providing clear feedback on the encountered issue.
